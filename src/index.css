@@ -12,8 +12,17 @@
   font-weight: normal;
 }
 
-body {
+h1, body {
   font-family: 'UbuntuMono-Bold';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-align:center;
+  align-items: center;
 }
+p {
+  text-align:center;
+  align-items: center;
+}
+
+
+

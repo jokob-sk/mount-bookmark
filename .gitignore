@@ -21,3 +21,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+#local assets
+src/config/local_artwork/*
+# exception to the rule
+!src/config/local_artwork/gitkeep.txt 

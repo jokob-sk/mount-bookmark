@@ -1,6 +1,9 @@
 # Mount Bookmark :mount_fuji:
 
-Mount Bookmark is a self-hosted, highly customizable bookmark board that allows you to view any YouTube stream/video in the background. I made it first as a simple project for myself, however after seeing that I wasn't the only one interested in such a tool, I decided to make it into my first open-source project.
+Based on https://github.com/LinoIten/mount-bookmark.
+Source code: On [GitHub](https://github.com/jokob-sk/mount-bookmark)
+
+Mount Bookmark is a self-hosted, highly customizable bookmark board that allows you to view YouTube stream/videos, images, gif in the background.
 
 # Installation :volcano:
 
@@ -86,10 +89,36 @@ As the name suggests here you can define all the colors in the app. You can use 
         "left": "0px"
     }
   },
-  "searchEngine": "https://www.ecosia.org/search?q="
+  "searchEngine": "https://www.duckduckgo.com/?q="
 }
 ```
 
 > **_Note:_**  Currently the only way to use Icons is to use the svg-path
 
-The names of each attribute should be fairly self-explanatory!
+Get them here: https://materialdesignicons.com/
+
+The names of each attribute should be fairly self-explanatory.
+
+If you want to override the search engine specified in the `settings.json` file use the following characters + a space:
+
+- 'e' for https://www.ecosia.org/
+- 'd' for https://www.duckduckgo.com/
+- 'g' for https://www.google.com/
+- 'b' for https://www.bing.com/
+- 'm' for https://www.google.com/maps/
+
+So for example if you want to use duckduckgo.com to search for the term 'mount bookmark' type `d mount bookmark`
+
+You can modify these in the `settings.json` file. 
+
+# Local artwork:scroll:
+
+Local artwork can be placed in a src/config/local_artwork/<subfolder> folder. Use folder names without spaces for best results. 
+  
+# Docker
+    
+- Map your settings.json to ```/opt/mount-bookmark/src/config/settings.json```
+- Map your background images location to ```/opt/mount-bookmark/src/config/local_artwork/```
+- Map your port to `:3000`
+  
+  <a href="https://www.buymeacoffee.com/jokobsk" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 30px !important;width: 117px !important;" width="117" height="30"></a>

@@ -1,0 +1,1 @@
+#a file to keep the local_artttwork folder committed in git

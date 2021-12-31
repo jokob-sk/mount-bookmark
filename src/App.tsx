@@ -1,11 +1,29 @@
-import BackgroundStream from './components/BackgroundStream';
-import MainCard from './components/MainCard';
+import Background from './components/Background';
+import React,{Component} from 'react';
+import Main from './components/Main';
+import Helper from './Utils';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route  
+} from "react-router-dom";
 
-export default function App() {
-  return (
-    <>
-      <BackgroundStream />
-      <MainCard />
-    </>
-  );
+
+export default class App extends Component{
+  constructor(){
+    super({});
+    // initialise background cookie
+    Helper.initBackground(); 
+  }
+  
+  render () {
+    return <Router>
+    <Switch>
+          <Route exact path="/">
+            <Background  />
+            <Main sources={Helper.getSources()}  />
+          </Route>
+    </Switch>
+    </Router>
+  }
 }
