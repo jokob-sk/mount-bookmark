@@ -121,4 +121,4 @@ Local artwork can be placed in a src/config/local_artwork/<subfolder> folder. Us
 - Map your background images location to ```/opt/mount-bookmark/src/config/local_artwork/```
 - Map your port to `:3000`
   
-  <a href="https://www.buymeacoffee.com/jokobsk" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 30px !important;width: 117px !important;" width="117" height="30"></a>
+  
