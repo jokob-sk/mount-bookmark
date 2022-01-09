@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
 import clsx from 'clsx';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import { Card, Grid, InputAdornment, Link, makeStyles, SvgIcon, TextField, Typography } from '@material-ui/core';
-import SearchIcon from '@material-ui/icons/Search';
+import { Card, Grid,  Link, makeStyles, SvgIcon,  Typography } from '@material-ui/core';
 import colorPalette from '../config/colorPalette.json';
 import settings from '../config/settings.json';
 import Cookies from 'universal-cookie';
@@ -15,8 +13,7 @@ const minWidth = '780px';
 const useStyles = makeStyles({
   root: {
     "& .MuiPaper-root": {
-      maxWidth: "100px",
-      width:"100px",
+     
     },
     "& .MuiGrid-item": {
       width: "inherit",
@@ -31,14 +28,13 @@ const useStyles = makeStyles({
     minHeight: "10%",
     opacity:0.6,
     ['@media (min-width:'+minWidth+')']: 
-      {
-        width: "40%",
+      {       
         position: "absolute", 
         padding: "40px",
         opacity: 0,
-        left: "50%",
-        top: "50%",
-        transform: "translate(-50%, -50%)",
+        width:"80%",
+        marginLeft:"7%",
+        top:"7%"
       },
     transitionDelay: "1s",
     transition: "opacity 1s",
@@ -96,10 +92,7 @@ const useStyles = makeStyles({
     },
     '& input': {
       color: colorPalette.text.primary,
-    },
-    '& .MuiPaper-root': {
-      width: "50px!important"
-    },
+    }
   },
   formControl: {
     margin: "3px",
@@ -112,23 +105,8 @@ const useStyles = makeStyles({
   inputFocused: {
     color: colorPalette.text.primary+"!important",
     backgroundColor: colorPalette.backroundBox,
-  },
-  searchBar: {
-    width: "100%",
-    '& .MuiInput-underline::after': {
-      borderBottomColor: colorPalette.accent1,
-    },
-    '& .MuiInput-underline::before': {
-      borderBottomColor: colorPalette.text.primary
-    },
-    '& input': {
-      color: colorPalette.text.primary,
-    },
-  },
-  grid: {
-    width: "100%",
-    height: "100%",
-  }
+  },  
+  
 });
 
 interface IBookmark {
@@ -137,6 +115,9 @@ interface IBookmark {
   link?: string,
   xs?: any
 }
+
+let categories : String[] = [];
+let bookmarks =  settings.bookmarks;
 
 function Bookmark(props: IBookmark) {
   const classes = useStyles();
@@ -148,7 +129,7 @@ function Bookmark(props: IBookmark) {
   } = props
 
   return (
-    <Grid item xs={3}>
+    <Grid item xs={2}>
       <Link href={link} style={{textDecoration: "none"}}>
         <Grid
           container       
@@ -183,8 +164,7 @@ function Info(props:any) {
   const classes = useStyles();
 
   return (    
-      <>
-        
+      <>        
         {props.icon ? (
           <SvgIcon onClick={() => { alert(cookies.get('background'))}} fontSize="small" className={clsx(classes.icon, classes.bookmarkIcon)}>
             <path d={props.icon} />
@@ -197,53 +177,25 @@ function Info(props:any) {
 function Main(props:any) { 
   let classes = useStyles();
   const sources = props.sources as string[];
-  const [searchQuery, setSearchQuery] = useState<string>("");    
-  
-  const handleChange = (event: any) => {
-    setSearchQuery(event.target.value)
-  }
-
+ 
   const handleBackgroundChange = (event: any) => {    
     cookies.set('source', event.target.value, { path: '/' });    
   }
 
-  const handleKeyPress = (event: any) => {
-      if(event.key === 'Enter'){
+  function prepareBookmarks()
+  {
+    
 
-        // search (not a full URL with http/https)
-        if(!searchQuery.startsWith('http://') && !searchQuery.startsWith('https://'))
-        {
-          // use default search engine if not overriden
-          var searchEngine = settings.searchSettings.defaultSearchEngine;
-          var searchQueryNew = searchQuery;
-          console.log(settings.searchSettings)
-          // overriding the default search engine        
-          if(searchQuery.length > 3 && searchQuery[1] === ' ')
-          {
-            settings.searchSettings.searchEngines.map(function(engine){              
-                if(engine.key === searchQuery[0].toLowerCase() )
-                {
-                  searchEngine = engine.url;
-                  searchQueryNew = searchQuery.slice(2);
-                }                
-                return null;
-              }              
-            )         
-          }
-          // execute search
-          document.location.href = searchEngine + searchQueryNew;
-        
-        }
-      // searchquery is full URL so just redirect (a full URL with http/https))
-      else{
-        document.location.href = searchQuery;
-      }
-    }
- }
+    
+    bookmarks.map(item => categories.find(catItem => catItem === item.category ) === undefined ? categories.push(item.category) : false)
 
+    console.log(categories)
+  }
+
+  prepareBookmarks()
 
   return (
-    <Card elevation={3} className={classes.main}  style={searchQuery.length !== 0 ? {opacity: "0.8"} : {}}>
+    <Card elevation={3} className={classes.main} >
       <Grid 
         container 
         spacing={2}
@@ -251,24 +203,36 @@ function Main(props:any) {
         alignItems="flex-start"
         className="grid"
         alignContent="space-between"
+      >        
+
+        {categories.map(category => (
+          <Grid item xs={12}>
+            <Typography className={classes.bookmarkCategory}>{category}</Typography>
+            <Grid 
+              container 
+              spacing={2}
+              justify="flex-start"
+              alignItems="flex-start"
+              className="grid"
+              alignContent="space-between"
+            >
+              {bookmarks.map(bookmark => bookmark.category === category ? (
+                <Bookmark icon={bookmark.iconSVGPath} name={bookmark.name} link={bookmark.url} ></Bookmark>
+              ) : <></>)}
+            </Grid>
+          </Grid>
+        ))}
+      </Grid>
+      <Grid container
+       spacing={2}
+       justify="flex-end"
+       alignItems="flex-end"
       >
-        <Grid item xs={10}>
-          <TextField
-            className={classes.searchBar}
-            placeholder="Search"
-            onChange={handleChange}
-            onKeyPress={handleKeyPress}
-            autoFocus={true}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon className={classes.icon} />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </Grid>
-        <Grid item xs={2} >
+      <Grid
+        item xs={12}
+        className="grid-info"
+        >
+        <Info icon={settings.generalSettings.infoIcon} ></Info>  
         <FormControl 
          className={classes.dropdownForm}
         >
@@ -285,36 +249,6 @@ function Main(props:any) {
             ))}
         </Select>
       </FormControl>
-
-        </Grid>
-        {settings.bookmarkCategories.map(category => (
-          <Grid item xs={12}>
-            <Typography className={classes.bookmarkCategory}>{category.name}</Typography>
-            <Grid 
-              container 
-              spacing={1}
-              justify="flex-start"
-              alignItems="flex-start"
-              className="grid"
-              alignContent="space-between"
-            >
-              {category.bookmarks.map(bookmark => (
-                <Bookmark icon={bookmark.svgPath} name={bookmark.name} link={bookmark.link} ></Bookmark>
-              ))}
-            </Grid>
-          </Grid>
-        ))}
-      </Grid>
-      <Grid container
-       spacing={5}
-       justify="flex-end"
-       alignItems="flex-end"
-      >
-      <Grid
-        item xs={12}
-        className="grid-info"
-        >
-        <Info icon={settings.generalSettings.infoIcon} ></Info>  
       </Grid>
       </Grid>
     </Card>

@@ -8,8 +8,6 @@ import { useState } from 'react';
 import Cookies from 'universal-cookie';
 const cookies = new Cookies();
 
-
-
 const useStyles = makeStyles({
   imageBackground: {
     width: '100%',
