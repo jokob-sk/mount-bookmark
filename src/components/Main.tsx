@@ -7,7 +7,7 @@ import colorPalette from '../config/colorPalette.json';
 import settings from '../config/settings.json';
 import Cookies from 'universal-cookie';
 const cookies = new Cookies();
-const minWidth = '780px';
+const minWidth = '1500px';
 
 
 const useStyles = makeStyles({
@@ -22,16 +22,16 @@ const useStyles = makeStyles({
     color: colorPalette.text.primary+"!important",
     alignContent: "center center",
   },
-  main: {   
-    padding: "4px",
+  main: {       
     backgroundColor: colorPalette.backroundBox,    
     minHeight: "10%",
+    padding: "40px",
     opacity:0.6,
     ['@media (min-width:'+minWidth+')']: 
       {       
         position: "absolute", 
-        padding: "40px",
-        opacity: 0,
+        
+        // opacity: 0,
         width:"80%",
         marginLeft:"7%",
         top:"7%"
@@ -49,7 +49,7 @@ const useStyles = makeStyles({
     width:'100%',
     display: 'none',    
     ['@media (min-width:'+minWidth+')']: {
-      fontSize: "0.98em",
+      fontSize: "0.85em",
       display: 'block',
     },
     fontWeight: "bold",
@@ -65,11 +65,13 @@ const useStyles = makeStyles({
     color: colorPalette.text.secondary,
   },
   bookmarkCategory: {
-    fontFamily: "UbuntuMono",
-    letterSpacing: "1.3",
-    ['@media (min-width:'+minWidth+')']: {fontSize: "1.3em"},
+    fontFamily: "UbuntuMono",    
+    ['@media (min-width:'+minWidth+')']: {fontSize: "1em"},
     fontWeight: "bold",
     color: colorPalette.accent1,
+    // textOrientation:"upright",
+    writingMode: "vertical-rl",
+    textAlign: 'center',
   },
   gridItem:{
     textAlign: 'center',
@@ -113,8 +115,19 @@ interface IBookmark {
   icon?: string,
   name?: string,
   link?: string,
-  xs?: any
+  sm?: any
 }
+
+let categoriesBookmarksTree: [{
+  category?: String,
+  bookmark?:[
+  {
+    category?:string,
+    name?:string,
+    url?:string,
+    iconSVGPath?:string
+  }]
+}] = [{}];
 
 let categories : String[] = [];
 let bookmarks =  settings.bookmarks;
@@ -129,7 +142,7 @@ function Bookmark(props: IBookmark) {
   } = props
 
   return (
-    <Grid item xs={2}>
+    <Grid item sm={2} xs={2}>
       <Link href={link} style={{textDecoration: "none"}}>
         <Grid
           container       
@@ -149,7 +162,8 @@ function Bookmark(props: IBookmark) {
 
           <Grid 
             item 
-            xs={12} 
+            sm={12} 
+            xs={12}
             >
             <Typography className={classes.bookmarkName} align="center">{name ? name : ""}</Typography> 
           </Grid>
@@ -183,14 +197,11 @@ function Main(props:any) {
   }
 
   function prepareBookmarks()
-  {
-    
-
-    
+  {    
+    // populate categories
     bookmarks.map(item => categories.find(catItem => catItem === item.category ) === undefined ? categories.push(item.category) : false)
-
-    console.log(categories)
   }
+  
 
   prepareBookmarks()
 
@@ -205,31 +216,44 @@ function Main(props:any) {
         alignContent="space-between"
       >        
 
-        {categories.map(category => (
-          <Grid item xs={12}>
-            <Typography className={classes.bookmarkCategory}>{category}</Typography>
-            <Grid 
-              container 
-              spacing={2}
-              justify="flex-start"
-              alignItems="flex-start"
-              className="grid"
-              alignContent="space-between"
-            >
-              {bookmarks.map(bookmark => bookmark.category === category ? (
-                <Bookmark icon={bookmark.iconSVGPath} name={bookmark.name} link={bookmark.url} ></Bookmark>
-              ) : <></>)}
+        {categories.map((cat) => ( cat?.toLowerCase() !== "hidden" ?
+          <Grid xl={4} md={4} sm={6} xs={12} container          
+
+          >            
+
+              <Grid 
+                sm={1}   
+                xs={2}             
+                container
+                direction="column"
+                justifyContent="center"
+               
+                
+              > 
+                <Grid item sm={12} xs={10}>
+                  <Typography className={classes.bookmarkCategory} >{cat}</Typography>
+                </Grid>
+              </Grid>  
+              <Grid container sm={11} xs={10} spacing={3}>             
+                {bookmarks.map((bookmark) => bookmark.category === cat ? 
+                <Grid item sm={2} xs={3} >  
+                  <Bookmark icon={bookmark.iconSVGPath} name={bookmark.name} link={bookmark.url} ></Bookmark>
+                </Grid>
+                : <></>)}
+              </Grid>
             </Grid>
-          </Grid>
-        ))}
+
+        : <></>) )}
       </Grid>
+
+
       <Grid container
-       spacing={2}
+       spacing={3}
        justify="flex-end"
        alignItems="flex-end"
       >
       <Grid
-        item xs={12}
+        item sm={12} xs={12}
         className="grid-info"
         >
         <Info icon={settings.generalSettings.infoIcon} ></Info>  
