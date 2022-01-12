@@ -29,9 +29,8 @@ const useStyles = makeStyles({
     opacity:0.6,
     ['@media (min-width:'+minWidth+')']: 
       {       
-        position: "absolute", 
-        
-        // opacity: 0,
+        position: "absolute",         
+        opacity: 0,
         width:"80%",
         marginLeft:"7%",
         top:"7%"
