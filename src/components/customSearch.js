@@ -225,8 +225,8 @@ function CustomSearch(attrb) {
                 onKeyDown={handleOnKeyDown}
                 autoFocus={true}
 
-                Inputattrb={{
-                    ...params.Inputattrb,
+                InputProps={{
+                    ...params.InputProps,
                     startAdornment: (
                         <InputAdornment position="start">
                             <SvgIcon>
