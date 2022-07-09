@@ -1,14 +1,15 @@
 import React, { useState, Fragment } from 'react';
-import { InputAdornment, TextField, makeStyles, SvgIcon, Chip,  Paper } from '@material-ui/core';
+import { InputAdornment, TextField, makeStyles, SvgIcon, Chip,  Paper, Box, styled, Typography, Divider,  } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import { ArrowLeft, Label } from '@material-ui/icons';
 
-function CustomSearch(props) {
+function CustomSearch(attrb) {
 
   // Part of React magic START
   var inputRef = null;
   // Part of React magic END
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchEngine, setSearchEngine] = useState(props.defaultSearchEngine);
+  const [searchEngine, setSearchEngine] = useState(attrb.defaultSearchEngine);
   const [searchEngineOverriden, setSearchEngineOverriden] = useState(false);
   const [showSearchBox, setShowSearchBox] = useState(false);
   const [bookmarkSelected, setBookmarkSelected] = useState(false);
@@ -23,39 +24,39 @@ function CustomSearch(props) {
 
   const useStylesSearch = makeStyles({
       search: {
-          opacity: props.animationStart,
-          ['@media (min-width:' + props.minWidth + ')']:
+          opacity: attrb.animationStart,
+          ['@media (min-width:' + attrb.minWidth + ')']:
           {
-              transitionDelay: props.hideDelay + "s",
-              opacity: props.animationStart,
-              animation: "$loadAnimation " + props.hideDuration + "s ease-in " + props.hideDelay + "s",
+              transitionDelay: attrb.hideDelay + "s",
+              opacity: attrb.animationStart,
+              animation: "$loadAnimation " + attrb.hideDuration + "s ease-in " + attrb.hideDelay + "s",
               animationFillMode: "forwards"
           },
           '&:hover': {
-              ['@media (min-width:' + props.minWidth + ')']: {
-                  animation: "$hoverAnimation " + props.hideDuration + "s ease-in " + props.hideDelay + "s",
+              ['@media (min-width:' + attrb.minWidth + ')']: {
+                  animation: "$hoverAnimation " + attrb.hideDuration + "s ease-in " + attrb.hideDelay + "s",
                   animationFillMode: "forwards"
               },
           },
       },
       "@keyframes loadAnimation": {
           "to": showSearchBox ? {
-              transitionDelay: props.hideDelay + "s",
-              transition: "opacity " + props.hideDuration + "s",
-              opacity: props.animationStart
+              transitionDelay: attrb.hideDelay + "s",
+              transition: "opacity " + attrb.hideDuration + "s",
+              opacity: attrb.animationStart
           } :
               {
-                  opacity: props.animationEnd
+                  opacity: attrb.animationEnd
               }
       },
       "@keyframes hoverAnimation": {
           "to": {
-              opacity: props.animationStart
+              opacity: attrb.animationStart
           }
       },
       "@keyframes typingAnimation": {
           "to": {
-              opacity: props.animationStart
+              opacity: attrb.animationStart
           }
       }
   });
@@ -63,12 +64,43 @@ function CustomSearch(props) {
   // Bookmark suggestion dropdown
   const PaperMy = function ({ children }) {
     console.log(children)
-    return <Paper style={props.paperStyles}>{children}</Paper>;
+    return <Paper style={attrb.paperStyles} className={classesPopper.autocomplete}>{children}</Paper>;
   };
+
+  const useStylesPopper = makeStyles({
+    autocomplete: {       
+      '& .MuiAutocomplete-option':
+        {       
+          textAlign: 'center',
+          display: 'block',
+          width: '95%',
+          marginLeft: '2.5%',
+          borderRadius: '3px',
+          alignContent: 'center',
+          '&[data-focus="true"]': {
+            backgroundColor: `grey`, 
+            //padding: '5px'           
+          },
+          '& .MuiSvgIcon-root':{
+            //padding: '5px'
+          },
+          '& .MuiInput-input':{
+            color: 'white',
+            border: 'none'
+          },
+          '& svg':{
+            float:'left'
+          }
+        }      
+    },
+  });
+
+
 
   // generate CSS
   const classesLabel = useStylesLabel();
   const classesSearch = useStylesSearch();
+  const classesPopper = useStylesPopper();
 
   // Event handling
 
@@ -93,7 +125,7 @@ function CustomSearch(props) {
     const textInput = event.target.value;
 
     if (textInput.length > 1 && textInput[1] === ' ') {
-      props.searchEngines.map(function (engine) {
+      attrb.searchEngines.map(function (engine) {
         if (engine.key === textInput[0].toLowerCase()) {
           // React magic START - Based on: https://codesandbox.io/embed/material-demo2-1hvzq?fontsize=14&hidenavigation=1&theme=dark
           var input = inputRef.querySelector("input");
@@ -122,7 +154,7 @@ function CustomSearch(props) {
 
   function handleLabelDelete() {
     setSearchEngineOverriden(false);
-    setSearchEngine(props.defaultSearchEngine);
+    setSearchEngine(attrb.defaultSearchEngine);
     setShowSearchBox(searchQuery.length > 1)
   }
 
@@ -150,25 +182,30 @@ function CustomSearch(props) {
           <Autocomplete
             disableClearable
             autoHighlight
+            //disableCloseOnSelect
             id="combo-box-demo"
             freeSolo = {true}
             PaperComponent={PaperMy} // dropdown popup for the bookmarks
             open={!bookmarkSelected && searchQuery.length > 2 && !searchEngineOverriden  } // open the bookmarks dropdown popup only when...
-            options={props.bookmarks}
+            options={attrb.bookmarks}
             placement="bottom"
+            
             getOptionLabel={(bookmark) => bookmark.name}
-            renderOption={option => {
+            renderOption={(  option) => { 
               return (
-                  <Fragment>
-                    {props.bookmarksShowIconInPopup && option.iconSVGPath ?
+                <Box >
+                  
+                    {attrb.bookmarksShowIconInPopup && option.iconSVGPath ?
                           <SvgIcon>
                                 <path d={option.iconSVGPath} />
                           </SvgIcon>
                           : <></>
                     }
-                      {option.name}
-                  </Fragment>
-              );
+                      <Typography  >{option.name}</Typography>
+                      
+                  
+                  </Box> 
+              )
           }}
             sx={{ width: 500 }}
             onChange={handleAutocompleteChange}
@@ -181,19 +218,19 @@ function CustomSearch(props) {
               <TextField
                 {...params}
                 className={classesSearch.search}
-                style={{...params}.style, props.searchStyles}
+                style={{...params}.style, attrb.searchStyles}
                 placeholder="Search"
                 onChange={handleChange}
                 onKeyPress={handleKeyPress}                
                 onKeyDown={handleOnKeyDown}
                 autoFocus={true}
 
-                InputProps={{
-                    ...params.InputProps,
+                Inputattrb={{
+                    ...params.Inputattrb,
                     startAdornment: (
                         <InputAdornment position="start">
                             <SvgIcon>
-                                <path d={props.keepDefaultIcon  ? props.defaultSearchEngine.iconSVGPath : searchEngine.iconSVGPath} />
+                                <path d={attrb.keepDefaultIcon  ? attrb.defaultSearchEngine.iconSVGPath : searchEngine.iconSVGPath} />
                             </SvgIcon>
                             {
                                 searchEngine.name ?
@@ -202,7 +239,7 @@ function CustomSearch(props) {
                                         size="small"
                                         onDelete={handleLabelDelete}
                                         className={classesLabel.label}
-                                        style = {props.labelStyles}
+                                        style = {attrb.labelStyles}
                                     />
                                     :
                                     ""
@@ -221,7 +258,7 @@ export default CustomSearch;
 
 
 // Default settings
-CustomSearch.defaultProps = {
+CustomSearch.defaultattrb = {
     hideDelay: "3",
     hideDuration: "2",
     minWidth: "780px",

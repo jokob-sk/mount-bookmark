@@ -25,7 +25,7 @@ const useStyles = makeStyles({
   main: {       
     backgroundColor: colorPalette.backroundBox,    
     minHeight: "10%",
-    padding: "40px",
+    padding: "45px",
     opacity:0.6,
     ['@media (min-width:'+minWidth+')']: 
       {       
@@ -40,6 +40,18 @@ const useStyles = makeStyles({
     '&:hover': {
       ['@media (min-width:'+minWidth+')']: {opacity:0.8, transition: "opacity 0.2s"},    
     },    
+    '& .category':
+    {
+      backgroundColor:colorPalette.accent2,
+      paddingTop: "14px",
+      marginTop: "10px",
+      borderRadius: "5px",
+      paddingBlockEnd: "25px",
+      paddingBlockStart: "15px",
+      marginRight: "10px",
+      marginLeft: "-10px",
+      cursor: "inherit",
+    }      
   },
   bookmarkName: {
     fontFamily: "UbuntuMono",
@@ -50,6 +62,10 @@ const useStyles = makeStyles({
     ['@media (min-width:'+minWidth+')']: {
       fontSize: "0.85em",
       display: 'block',
+      width: "60px",
+      whiteSpace: "nowrap",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
     },
     fontWeight: "bold",
     color: colorPalette.text.primary,
@@ -80,7 +96,8 @@ const useStyles = makeStyles({
     color: colorPalette.icon
   },
   bookmarkIcon: {
-    marginRight: "10px"
+    margin: "5px",
+    padding: "2px"
   },
   dropdownForm: {
     color: colorPalette.text.primary+"!important",
@@ -106,7 +123,7 @@ const useStyles = makeStyles({
   inputFocused: {
     color: colorPalette.text.primary+"!important",
     backgroundColor: colorPalette.backroundBox,
-  },  
+  }
   
 });
 
@@ -141,14 +158,14 @@ function Bookmark(props: IBookmark) {
   } = props
 
   return (
-    <Grid item sm={2} xs={2}>
-      <Link href={link} style={{textDecoration: "none"}}>
+    <Grid item xs={2} sm={2}  >
+      
         <Grid
           container       
           alignItems="center"
         >
           <Grid item
-          direction="column"
+          
           className={clsx(classes.gridItem)}
           >
             {icon ? (
@@ -161,14 +178,13 @@ function Bookmark(props: IBookmark) {
 
           <Grid 
             item 
-            sm={12} 
-            xs={12}
+            xs={12} sm={12} 
             >
             <Typography className={classes.bookmarkName} align="center">{name ? name : ""}</Typography> 
           </Grid>
 
         </Grid>
-      </Link>
+      
     </Grid>
   )
 }
@@ -199,45 +215,42 @@ function Main(props:any) {
   {    
     // populate categories
     bookmarks.map(item => categories.find(catItem => catItem === item.category ) === undefined ? categories.push(item.category) : false)
-  }
-  
+  }  
 
   prepareBookmarks()
 
   return (
     <Card elevation={3} className={classes.main} >
       <Grid 
+        
         container 
-        spacing={2}
-        justify="space-evenly"
+        spacing={1}
+        justifyContent="space-evenly"
         alignItems="flex-start"
         className="grid"
         alignContent="space-between"
       >        
 
         {categories.map((cat) => ( cat?.toLowerCase() !== "hidden" ?
-          <Grid xl={4} md={4} sm={6} xs={12} container          
-
-          >            
-
-              <Grid 
-                sm={1}   
-                xs={2}             
-                container
+          <Grid 
+              xl={4} md={6} sm={6} xs={12} container direction="row">            
+              <Grid className='category'
+                xs={2} sm={1}              
+                spacing={3}
                 direction="column"
                 justifyContent="center"
-               
-                
               > 
-                <Grid item sm={12} xs={10}>
+                <Grid item xs={2} sm={1} md={10} xl={10}>
                   <Typography className={classes.bookmarkCategory} >{cat}</Typography>
                 </Grid>
               </Grid>  
-              <Grid container sm={11} xs={10} spacing={3}>             
+              <Grid container  xs={10} sm={11}  >             
                 {bookmarks.map((bookmark) => bookmark.category === cat ? 
-                <Grid item sm={2} xs={3} >  
-                  <Bookmark icon={bookmark.iconSVGPath} name={bookmark.name} link={bookmark.url} ></Bookmark>
-                </Grid>
+                <Link href={bookmark.url} style={{textDecoration: "none"}}>
+                  <Grid item  xs={3} sm={2} md={2} xl={2}>  
+                    <Bookmark icon={bookmark.iconSVGPath} name={bookmark.name} ></Bookmark>
+                  </Grid>
+                </Link>
                 : <></>)}
               </Grid>
             </Grid>
@@ -247,12 +260,12 @@ function Main(props:any) {
 
 
       <Grid container
-       spacing={3}
-       justify="flex-end"
+        
+       justifyContent="flex-end"
        alignItems="flex-end"
       >
       <Grid
-        item sm={12} xs={12}
+        item xs={12} sm={12} 
         className="grid-info"
         >
         <Info icon={settings.generalSettings.infoIcon} ></Info>  

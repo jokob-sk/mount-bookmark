@@ -43,7 +43,8 @@ function getFolders(images:Image[]){
   
 
 function getRandomBackground() {
-    let source = cookies.get('source') === undefined && cookies.set('source', "video", { path: '/' }) ? "video" : cookies.get('source') as string;
+    if(cookies.get('source') === undefined ) cookies.set('source', "images")
+    let source =  cookies.get('source') as string;
     switch (source)
     {
       case "images":

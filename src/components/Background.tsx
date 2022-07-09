@@ -77,6 +77,8 @@ function Background() {
   const isImage = background !== undefined ? background.indexOf("/") > -1 : undefined;  
   const mediaQueryMinAspect = useMediaQuery('(min-aspect-ratio: 16/9)');
 
+  console.log(cookies.get('background') !== undefined ? cookies.get('background') : settings.imageSettings.images[0].url)
+
   function _onEnd(event: { target: YouTubePlayer; data: number }) {
       event.target.playVideo();
   }
