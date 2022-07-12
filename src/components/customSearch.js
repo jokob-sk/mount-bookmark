@@ -1,7 +1,6 @@
-import React, { useState, Fragment } from 'react';
-import { InputAdornment, TextField, makeStyles, SvgIcon, Chip,  Paper, Box, styled, Typography, Divider,  } from '@material-ui/core';
+import React, { useState } from 'react';
+import { InputAdornment, TextField, makeStyles, withStyles, SvgIcon, Chip,  Paper, Box, Typography, Card} from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { ArrowLeft, Label } from '@material-ui/icons';
 
 function CustomSearch(attrb) {
 
@@ -15,6 +14,7 @@ function CustomSearch(attrb) {
   const [bookmarkSelected, setBookmarkSelected] = useState(false);
 
   // Look and Feel
+  
 
   const useStylesLabel = makeStyles({
     label: {
@@ -22,7 +22,16 @@ function CustomSearch(attrb) {
     }
   })
 
-  const useStylesSearch = makeStyles({
+  const useStylesSearchBox = makeStyles({
+      root:{
+        "& .MuiPaper-root":{
+          backgroundColor: attrb.searchBoxStyles.background + "!important",
+        },
+        backgroundColor: attrb.searchBoxStyles.background + "!important",
+        "& .MuiPaper-elevation1":{
+          boxShadow: "0px 0px 0px 0px !important"
+        }
+      },
       search: {
           opacity: attrb.animationStart,
           ['@media (min-width:' + attrb.minWidth + ')']:
@@ -38,6 +47,10 @@ function CustomSearch(attrb) {
                   animationFillMode: "forwards"
               },
           },
+          '& .MuiInputBase-root':
+          {
+            color: attrb.searchInputStyles.color,
+          }          
       },
       "@keyframes loadAnimation": {
           "to": showSearchBox ? {
@@ -61,6 +74,23 @@ function CustomSearch(attrb) {
       }
   });
 
+  const CustomColorsTextField = withStyles({
+    root: {
+      '& .MuiInputBase-input': {
+        color: attrb.searchInputStyles.color, // Text color
+      },
+      '& .MuiInput-underline:before': {
+        borderBottomColor: attrb.searchInputStyles.underlineColor, // Semi-transparent underline
+      },
+      '& .MuiInput-underline:hover:before': {
+        borderBottomColor: attrb.searchInputStyles.color, // Solid underline on hover
+      },
+      '& .MuiInput-underline:after': {
+        borderBottomColor: attrb.searchInputStyles.color, // Solid underline on focus
+      },
+    },
+  })(TextField);
+
   // Bookmark suggestion dropdown
   const PaperMy = function ({ children }) {
     console.log(children)
@@ -75,17 +105,13 @@ function CustomSearch(attrb) {
           display: 'block',
           width: '95%',
           marginLeft: '2.5%',
-          borderRadius: '3px',
+          borderRadius: '3px',          
           alignContent: 'center',
           '&[data-focus="true"]': {
-            backgroundColor: `grey`, 
-            //padding: '5px'           
-          },
-          '& .MuiSvgIcon-root':{
-            //padding: '5px'
+            backgroundColor: attrb.paperStyles.hoverColor,           
           },
           '& .MuiInput-input':{
-            color: 'white',
+            color: 'red',
             border: 'none'
           },
           '& svg':{
@@ -99,7 +125,7 @@ function CustomSearch(attrb) {
 
   // generate CSS
   const classesLabel = useStylesLabel();
-  const classesSearch = useStylesSearch();
+  const classesSearchBox = useStylesSearchBox();
   const classesPopper = useStylesPopper();
 
   // Event handling
@@ -178,77 +204,84 @@ function CustomSearch(attrb) {
   }  
 
   return (
-      <React.Fragment>
-          <Autocomplete
-            disableClearable
-            autoHighlight
-            //disableCloseOnSelect
-            id="combo-box-demo"
-            freeSolo = {true}
-            PaperComponent={PaperMy} // dropdown popup for the bookmarks
-            open={!bookmarkSelected && searchQuery.length > 2 && !searchEngineOverriden  } // open the bookmarks dropdown popup only when...
-            options={attrb.bookmarks}
-            placement="bottom"
-            
-            getOptionLabel={(bookmark) => bookmark.name}
-            renderOption={(  option) => { 
-              return (
-                <Box >
-                  
-                    {attrb.bookmarksShowIconInPopup && option.iconSVGPath ?
-                          <SvgIcon>
-                                <path d={option.iconSVGPath} />
-                          </SvgIcon>
-                          : <></>
-                    }
-                      <Typography  >{option.name}</Typography>
-                      
-                  
-                  </Box> 
-              )
-          }}
-            sx={{ width: 500 }}
-            onChange={handleAutocompleteChange}
-            // Part of React magic START
-            ref={input => {
-              inputRef = input;
-            }}
-            // Part of React magic END
-            renderInput={(params) =>
-              <TextField
-                {...params}
-                className={classesSearch.search}
-                style={{...params}.style, attrb.searchStyles}
-                placeholder="Search"
-                onChange={handleChange}
-                onKeyPress={handleKeyPress}                
-                onKeyDown={handleOnKeyDown}
-                autoFocus={true}
-
-                InputProps={{
-                    ...params.InputProps,
-                    startAdornment: (
-                        <InputAdornment position="start">
+      <React.Fragment >
+        <div style={ attrb.searchBoxContainerStyles} >
+          <Card style={ attrb.searchBoxStyles} >
+            <Autocomplete
+              disableClearable
+              autoHighlight
+              //disableCloseOnSelect
+              id="combo-box-demo"
+              freeSolo = {true}
+              PaperComponent={PaperMy} // dropdown popup for the bookmarks
+              open={!bookmarkSelected && searchQuery.length > 2 && !searchEngineOverriden  } // open the bookmarks dropdown popup only when...
+              options={attrb.bookmarks}
+              className={classesSearchBox.search}                   
+              placement="bottom"
+              getOptionLabel={(bookmark) => bookmark.name}
+              renderOption={(  option) => { 
+                return (
+                  <Box >
+                    
+                      {attrb.bookmarksShowIconInPopup && option.iconSVGPath ?
                             <SvgIcon>
-                                <path d={attrb.keepDefaultIcon  ? attrb.defaultSearchEngine.iconSVGPath : searchEngine.iconSVGPath} />
+                                  <path d={option.iconSVGPath} />
                             </SvgIcon>
-                            {
-                                searchEngine.name ?
-                                    <Chip
-                                        label={searchEngine.name}
-                                        size="small"
-                                        onDelete={handleLabelDelete}
-                                        className={classesLabel.label}
-                                        style = {attrb.labelStyles}
-                                    />
-                                    :
-                                    ""
-                            }
-                        </InputAdornment>
-                    ),
-                }}
-              />}
-          />
+                            : <></>
+                      }
+                        <Typography  >{option.name}</Typography>
+                        
+                    
+                    </Box> 
+                )
+            }}
+              
+              onChange={handleAutocompleteChange}
+              // Part of React magic START
+              ref={input => {
+                inputRef = input;
+              }}
+              // Part of React magic END
+              renderInput={(params) =>
+                <CustomColorsTextField
+                  {...params}                                                
+                  placeholder="Search"
+                  onChange={handleChange}
+                  onKeyPress={handleKeyPress}                
+                  onKeyDown={handleOnKeyDown}
+                  autoFocus={true}
+                  style={attrb.searchIconStyles}
+                  variant="standard"
+                  sx={{
+                    '& .MuiInput-underline:before': { borderBottomColor: 'orange' },
+                    '& .MuiInput-underline:after': { borderBottomColor: 'orange' },
+                  }}
+                  InputProps={{                  
+                      ...params.InputProps,                                        
+                      startAdornment: (
+                          <InputAdornment position="start" >
+                              <SvgIcon style={attrb.searchIconStyles}>
+                                  <path d={attrb.keepDefaultIcon  ? attrb.defaultSearchEngine.iconSVGPath : searchEngine.iconSVGPath} />
+                              </SvgIcon>
+                              {
+                                  searchEngine.name ?
+                                      <Chip
+                                          label={searchEngine.name}
+                                          size="small"
+                                          onDelete={handleLabelDelete}
+                                          className={classesLabel.label}
+                                          style = {attrb.labelStyles}
+                                      />
+                                      :
+                                      ""
+                              }
+                          </InputAdornment>
+                      ),
+                  }}
+                />}
+            />
+          </Card>
+        </div>
       </React.Fragment>
   )
 
@@ -322,10 +355,11 @@ CustomSearch.defaultattrb = {
       color:"black",
       backgroundColor: "grey",
     },
-    searchStyles:
+    searchBoxStyles:
     {
       padding: "20px",
-      backgroundColor: "#e1d6d6"
+      backgroundColor: "#e1d6d6",
+      width: "90px"
     },
     paperStyles: {
       width: "fit-content"

@@ -11,20 +11,18 @@ const minWidth = '1500px';
 
 
 const useStyles = makeStyles({
-  root: {
-    "& .MuiPaper-root": {
-     
-    },
+  root: {    
     "& .MuiGrid-item": {
       width: "inherit",
+    },    
+    ".MuiListItem-root" : {
+      justifycontent: "center !important",
     },
-    backgroundColor: colorPalette.backroundBox,
-    color: colorPalette.text.primary+"!important",
-    alignContent: "center center",
-    
+    backgroundColor: colorPalette.background,
+    color: colorPalette.text.primary,
   },
   main: {       
-    backgroundColor: colorPalette.backroundBox,    
+    backgroundColor: colorPalette.backgroundBox,    
     minHeight: "10%",
     padding: "45px",
     opacity:0.6,
@@ -34,7 +32,7 @@ const useStyles = makeStyles({
         opacity: 0,
         width:"80%",
         marginLeft:"7%",
-        top:"7%"
+        top:"17%"
       },
     transitionDelay: "1s",
     transition: "opacity 1s",
@@ -132,7 +130,7 @@ const useStyles = makeStyles({
   },
   inputFocused: {
     color: colorPalette.text.primary+"!important",
-    backgroundColor: colorPalette.backroundBox,
+    backgroundColor: colorPalette.backgroundBox,
   }
 });
 

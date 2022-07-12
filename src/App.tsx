@@ -25,9 +25,12 @@ export default class App extends Component{
             <Background  />
             <Main sources={Helper.getSources()}  />
             <CustomSearch
-             labelStyles = {settings.labelStyles}
-             searchStyles = {settings.searchStyles}      
+             labelStyles = {settings.labelStyles}             
+             searchBoxContainerStyles = {settings.searchBoxContainerStyles}      
+             searchBoxStyles = {settings.searchBoxStyles}      
              paperStyles = {settings.paperStyles}     
+             searchInputStyles = {settings.searchInputStyles}
+             searchIconStyles = {settings.searchIconStyles}
              defaultSearchEngine = {settings.searchSettings.defaultSearchEngine}
              keepDefaultIcon = {settings.searchSettings.keepDefaultIcon}
              animationEnd = {settings.searchSettings.styles.opacityAtAnimationEnd}
