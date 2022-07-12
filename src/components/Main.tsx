@@ -17,6 +17,7 @@ const useStyles = makeStyles({
     },    
     ".MuiListItem-root" : {
       justifycontent: "center !important",
+      backgroundColor: colorPalette.backgroundBox,
     },
     backgroundColor: colorPalette.background,
     color: colorPalette.text.primary,
