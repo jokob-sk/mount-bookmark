@@ -14,11 +14,13 @@ function CustomSearch(attrb) {
   const [bookmarkSelected, setBookmarkSelected] = useState(false);
 
   // Look and Feel
-  
-
   const useStylesLabel = makeStyles({
     label: {
       opacity: 1,
+      "&  .MuiChip-deleteIcon":
+      {
+        color: attrb.searchInputStyles.color
+      }
     }
   })
 
@@ -121,8 +123,6 @@ function CustomSearch(attrb) {
     },
   });
 
-
-
   // generate CSS
   const classesLabel = useStylesLabel();
   const classesSearchBox = useStylesSearchBox();
@@ -206,7 +206,7 @@ function CustomSearch(attrb) {
   return (
       <React.Fragment >
         <div style={ attrb.searchBoxContainerStyles} >
-          <Card style={ attrb.searchBoxStyles} >
+          <Card style={ attrb.searchBoxStyles} className={classesSearchBox.search}  >
             <Autocomplete
               disableClearable
               autoHighlight
@@ -216,13 +216,12 @@ function CustomSearch(attrb) {
               PaperComponent={PaperMy} // dropdown popup for the bookmarks
               open={!bookmarkSelected && searchQuery.length > 2 && !searchEngineOverriden  } // open the bookmarks dropdown popup only when...
               options={attrb.bookmarks}
-              className={classesSearchBox.search}                   
+                                
               placement="bottom"
               getOptionLabel={(bookmark) => bookmark.name}
               renderOption={(  option) => { 
                 return (
-                  <Box >
-                    
+                  <Box  >
                       {attrb.bookmarksShowIconInPopup && option.iconSVGPath ?
                             <SvgIcon>
                                   <path d={option.iconSVGPath} />
@@ -230,8 +229,6 @@ function CustomSearch(attrb) {
                             : <></>
                       }
                         <Typography  >{option.name}</Typography>
-                        
-                    
                     </Box> 
                 )
             }}
@@ -284,11 +281,8 @@ function CustomSearch(attrb) {
         </div>
       </React.Fragment>
   )
-
 }
-
 export default CustomSearch;
-
 
 // Default settings
 CustomSearch.defaultattrb = {
