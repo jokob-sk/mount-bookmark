@@ -175,23 +175,41 @@ As the name suggests here you can define all the colors in the app. You can use 
       }
       
     ],
-    "labelStyles" : 
+     "labelStyles" : 
     {
       "color":"white",
-      "backgroundColor":"red",
-      "opacity":"0.2"
+      "backgroundColor":"black",
+      "opacity":"0.9"
     },
-    "searchStyles":
+    "searchBoxContainerStyles":
     {
+      "alignContent":"center",
+      "display": "flex",
+      "justifyContent": "center",
+      "backgroundColor":"transparent"
+    },
+    "searchBoxStyles":
+    {      
       "borderRadius": "10px",
       "padding": "20px",
-      "backgroundColor":"",
-      "width":"300px"
+      "backgroundColor":"rgba(37,42,51,0.98)",
+      "width":"300px",
+      "opacity":"0.9"
+    },
+    "searchInputStyles":
+    {      
+      "color": "white !important", 
+      "underlineColor": "grey" 
+    },
+    "searchIconStyles":
+    {      
+      "color": "white"      
     },
     "paperStyles": {     
       "color":"white",
       "backgroundColor":"black",
-      "size":"smaller"
+      "size":"smaller",
+      "hoverColor": "rgba(37,42,51,0.98)"
    }
 }
 
