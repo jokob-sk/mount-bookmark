@@ -15,7 +15,7 @@ type Image = {
   }
 
 
-const images = importAll(require.context('./config/local_artwork', true, /\.(png|jpe?g|svg|gif|webp)$/));
+const images = importAll(require.context('./config/local_artwork', true, /\.(png|jpe?g|svg|gif|webp|mp4)$/));
 const folders = getFolders(images);
 let backgroundsList = [] as string[];
 
