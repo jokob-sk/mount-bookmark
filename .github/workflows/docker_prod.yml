@@ -10,10 +10,14 @@
 name: Publish Docker image
 
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - '**'
     tags:
-      - '*.[1-9]+[0-9]?.[1-9]+*'
+      - '*.*.*'
+  pull_request:
+    branches:
+      - master
 jobs:
   docker:
     runs-on: ubuntu-latest
