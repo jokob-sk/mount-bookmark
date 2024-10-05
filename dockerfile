@@ -1,11 +1,37 @@
-FROM node:16-alpine3.12 
+# Base image
+FROM alpine
 
-RUN apk --no-cache add git
+# Set Node.js environment
+ENV NODE_VERSION=20.15.1
+ENV YARN_VERSION=1.22.15
 
-RUN git clone --depth 1 https://github.com/jokob-sk/mount-bookmark.git /opt/mount-bookmark
-WORKDIR /opt/mount-bookmark
+# Argument for installation directory
+ARG INSTALL_DIR=/opt
 
-RUN npm install 
-CMD "npm" "start"
+# Install necessary packages including Node.js, npm, build tools, and Python
+RUN apk add --no-cache nodejs npm python3 make g++ bash
 
-EXPOSE 80
+# Update npm and node-gyp to the latest version
+RUN npm install -g npm@latest node-gyp@latest
+
+# Copy the entire repo into the installation directory
+COPY . ${INSTALL_DIR}/
+
+# Set the working directory to where your app is located
+WORKDIR ${INSTALL_DIR}/mount-bookmark
+
+# Ensure the entrypoint script is executable
+#RUN chmod +x ${INSTALL_DIR}/docker-entrypoint.sh
+
+# Install npm dependencies
+RUN npm install --legacy-peer-deps  # Use this if you encounter dependency issues
+
+# Expose port 3000
+EXPOSE 3000
+
+
+# Set entry point script
+#ENTRYPOINT ["${INSTALL_DIR}/docker-entrypoint.sh"]
+
+# Default command to run the application
+CMD ["npm", "start"]
