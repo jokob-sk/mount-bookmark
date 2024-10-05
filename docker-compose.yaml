@@ -8,8 +8,8 @@ services:
     ports:
       - 13003:3000
     volumes:
-      - ${APP_DATA_LOCATION}/mount-bookmark/local_artwork/:/opt/mount-bookmark/src/config/local_artwork
-      - ${APP_DATA_LOCATION}/mount-bookmark/settings.json:/opt/mount-bookmark/src/config/settings.json
+      - ${APP_DATA_LOCATION}/mount-bookmark/local_artwork/:/opt/src/config/local_artwork
+      - ${APP_DATA_LOCATION}/mount-bookmark/settings.json:/opt/src/config/settings.json
     environment:
       - TZ=Australia/Sydney
       - PUID=1000
