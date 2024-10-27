@@ -4,6 +4,8 @@
 
 # Mount Bookmark :mount_fuji:
 
+![image](https://i.imgur.com/NWen5UX.png)
+
 Based on https://github.com/LinoIten/mount-bookmark.
 Source code: On [GitHub](https://github.com/jokob-sk/mount-bookmark)
 
