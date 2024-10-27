@@ -1,3 +1,7 @@
+[![GitHub Committed](https://img.shields.io/github/last-commit/jokob-sk/mount-bookmark?color=40ba12&label=Pushed&logo=GitHub&logoColor=fff&style=for-the-badge)](https://github.com/jokob-sk/NetAlertX)
+[![Docker Size](https://img.shields.io/docker/image-size/jokobsk/mount-bookmark?label=Size&logo=Docker&color=0aa8d2&logoColor=fff&style=for-the-badge)](https://hub.docker.com/r/jokobsk/netalertx)
+[![Docker Pulls](https://img.shields.io/docker/pulls/jokobsk/mount-bookmark?label=Pulls&logo=docker&color=0aa8d2&logoColor=fff&style=for-the-badge)](https://hub.docker.com/r/jokobsk/netalertx)
+
 # Mount Bookmark :mount_fuji:
 
 Based on https://github.com/LinoIten/mount-bookmark.
