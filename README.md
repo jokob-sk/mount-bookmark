@@ -246,7 +246,7 @@ Local artwork can be placed in a src/config/local_artwork/<subfolder> folder. Us
 # Docker
     
 - Map your settings.json to ```/opt/src/config/settings.json```
-- Map your background images location to ```/opt/src/config/local_artwork/```
+- Map your background images location to ```/opt/src/config/local_artwork/``` (⚠ Images with spaces in names might cause issues)
 - Map your port to `:3000`
   
   <a href="https://www.buymeacoffee.com/jokobsk" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 30px !important;width: 117px !important;" width="117" height="30"></a>
